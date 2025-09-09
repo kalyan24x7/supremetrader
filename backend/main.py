@@ -1,8 +1,23 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 import psycopg2
 import os
 
 app = FastAPI()
+
+# Allow your frontend origin (Vercel) and local dev
+origins = [
+    "https://supremetrader.vercel.app",  # your deployed frontend
+    "http://localhost:3000"              # local dev testing
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,       # for dev you could also use ["*"]
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 DATABASE_URL = os.getenv("DATABASE_URL")
 
